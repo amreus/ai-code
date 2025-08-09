@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 # rsync_log_parser.rb
 
 class RsyncLogParser
