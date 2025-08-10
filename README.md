@@ -1,1 +1,3 @@
 # ai-code
+
+The `rsync-log-explainer` is a Ruby script designed to parse and explain the itemized change codes found in rsync log files. It helps users understand the detailed operations performed by rsync, such as file transfers, attribute changes, and other synchronization events, by providing human-readable explanations for each character in the 11-character rsync log codes. The script can process log files, accept single log lines from stdin, or take a log line as a command-line argument, and can also be integrated as a preview command in tools like `fzf` for interactive log analysis.
