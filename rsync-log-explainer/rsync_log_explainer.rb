@@ -67,15 +67,19 @@ class RsyncLogParser
 
   def parse_log_file(file_path)
     File.foreach(file_path) do |line|
-      # Regex to capture the 11-character code and the path, accounting for timestamp and process ID
-      match = line.match(/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} \[\d+\]\s+([<>ch.*.][fdLDS.][csptogua.+-]{9})\s+(.*)$/)
-      if match
-        code = match[1]
-        path = match[2]
-        explanation = explain_code(code)
-        puts "\e[32m#{line.strip}\e[0m"
-        puts "#{explanation}\n\n"
-      end
+      parse_log_line(line)
+    end
+  end
+
+  def parse_log_line(line)
+    # Regex to capture the 11-character code and the path, accounting for timestamp and process ID
+    match = line.match(/^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} \[\d+\]\s+([<>ch.*.][fdLDS.][csptogua.+-]{9})\s+(.*)$/)
+    if match
+      code = match[1]
+      path = match[2]
+      explanation = explain_code(code)
+      puts "\e[32m#{line.strip}\e[0m"
+      puts "#{explanation}\n\n"
     end
   end
 
@@ -111,17 +115,22 @@ end
 # To run this, save it as rsync_log_parser.rb
 # Then, from your terminal, navigate to the directory containing the file and run:
 # ruby rsync_log_parser.rb /path/to/your/dbak.log
+# Or pipe a log line: echo "2023/10/27 10:00:00 [12345] <f+++++++++ some/file/path" | ruby rsync_log_parser.rb
 
 if __FILE__ == $0
+  parser = RsyncLogParser.new
   if ARGV.empty?
-    puts "Usage: ruby rsync_log_parser.rb <log_file_path>"
+    # Read from stdin
+    STDIN.each_line do |line|
+      parser.parse_log_line(line)
+    end
   else
-    log_file = ARGV[0]
-    if File.exist?(log_file)
-      parser = RsyncLogParser.new
-      parser.parse_log_file(log_file)
+    input = ARGV[0]
+    if File.exist?(input)
+      parser.parse_log_file(input)
     else
-      puts "Error: File not found at #{log_file}"
+      # Treat as a single log line
+      parser.parse_log_line(input)
     end
   end
 end
