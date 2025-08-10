@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cat "$@" | fzf --reverse --preview="echo {} | rsync-log-explainer" --preview-window "top:50%"

@@ -10,6 +10,27 @@ To run this script, navigate to the `rsync-log-explainer` directory and execute 
 ruby rsync_log_explainer.rb /path/to/your/rsync.log
 ```
 
+Alternatively, you can pipe a log line to the script or provide a single log line as an argument:
+
+```bash
+echo "2025/08/09 10:43:50 [116307] >f+++++++++ code/ai-code/rsync-log-explainer/README.md" | ruby rsync_log_explainer.rb
+ruby rsync_log_explainer.rb "2025/08/09 10:43:50 [116307] >f+++++++++ code/ai-code/rsync-log-explainer/README.md"
+```
+
+## FZF Integration (Preview Command)
+
+This script can be effectively used as a preview command within `fzf` to get instant explanations of rsync log lines as you fuzzy-find through them. This is particularly useful when browsing large rsync logs.
+
+Here's an example `fuzzy-viewer` script that leverages `fzf` with `rsync_log_explainer.rb`:
+
+```bash
+#!/bin/bash
+
+cat "$@" | fzf --reverse --preview="echo {} | rsync_log_explainer.rb" --preview-window "top:50%"
+```
+
+To use this, ensure `rsync_log_explainer.rb` is in your PATH or provide the full path to it in the `fuzzy-viewer` script.
+
 ## Rsync Itemized Change Codes
 
 The script explains the 11-character codes found in rsync logs. Each character in the code signifies a specific aspect of the file transfer or attribute change.
