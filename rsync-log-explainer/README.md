@@ -2,6 +2,10 @@
 
 This Ruby script parses rsync log files and provides explanations for the itemized change codes.
 
+The script explains the 11-character codes found in rsync logs. Each character in the code signifies a specific aspect of the file transfer or attribute change.
+
+For a detailed breakdown of each character and its possible values, refer to the `RsyncCodeExplanation` hash within the `rsync_log_explainer.rb` file.
+
 ## Usage
 
 To run this script, navigate to the `rsync-log-explainer` directory and execute it with a log file as an argument:
@@ -31,11 +35,6 @@ cat "$@" | fzf --reverse --preview="echo {} | rsync_log_explainer.rb" --preview-
 
 To use this, ensure `rsync_log_explainer.rb` is in your PATH or provide the full path to it in the `fuzzy-viewer` script.
 
-## Rsync Itemized Change Codes
-
-The script explains the 11-character codes found in rsync logs. Each character in the code signifies a specific aspect of the file transfer or attribute change.
-
-For a detailed breakdown of each character and its possible values, refer to the `RsyncCodeExplanation` hash within the `rsync_log_explainer.rb` file.
 
 ## Example Output
 
